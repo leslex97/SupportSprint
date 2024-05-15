@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<form name='search_form' method='post' class='form-inline'>
+    {% csrf_token %}
+    {{ form }}
+    <button
+    type = 'submit'
+    class = 'btn btn-primary btn-sm'>
+    <i class='fas fa-search'></i>
+    Szukaj
+    </button>
+
+</form>
+
+<table class ='table'>
+    <thead>
+        <tr>
+            <th scope="col">Numer zgłoszenia</th>
+            <th scope="col">Tytuł</th>
+            <th scope="col">Zgłaszający</th>
+            <th scope="col">Właściciel</th>
+            <th scope="col">Status</th>
+            <th scope="col">Kiedy wpłynęło</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets %}
+        <tr class='ticket' onclick="window.location.href='{% url 'ticket_details' ticket.id %}'">
+            <th scope="row">#{{ ticket.id }}</th>
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.reporter }}</td>
+            <td>{{ ticket.owner }}</td>
+            <td>{{ ticket.status }}</td>
+            <td>{{ ticket.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+</table>
+
+
+{% endblock%}

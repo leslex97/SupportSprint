@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container-fluid col-11 my-5">
+  <div class="card shadow">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-8">
+          <h2 class="card-title">
+            Zgłoszenie #{{ ticket.id }}: {{ ticket.title }}
+          </h2>
+          <h6 class="card-subtitle mb-2 text-muted">
+            Zgłaszający: {{ ticket.reporter }}
+          </h6>
+        </div>
+        <div class="col-md-4">
+          <p class="card-text">
+            Utworzono: <strong>{{ ticket.created_at }}</strong>
+          </p>
+          <p class="card-text">Status: <strong>{{ ticket.status }}</strong></p>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-md-8">
+          <p class="card-text">Kolejka: <strong>{{ ticket.queue }}</strong></p>
+        </div>
+        <div class="col-md-4">
+          <p class="card-text">
+            Właściciel: <strong>{{ ticket.owner }}</strong>
+          </p>
+        </div>
+        
+        <div class="col-md-10 mt-5 my-5 card shadow mx-auto">
+            <p class="card-body">{{ ticket.content }}</p>
+          </div>
+          <h2 class='h2'>Odpowiedzi:</h2>
+          {% for response in responses %}
+          <div class="col-md-10 mt-5 p-5 card shadow mx-auto">
+            <div class="response">
+              <p>
+                <strong>{{ response.author.username }}</strong> - {{ response.created_at }}
+              </p>
+              <p>{{ response.body }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        <p class="card-text m-5">
+          Ostatnia Aktualizacja: <strong>{{ ticket.updated_at }}</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="card shadow p-5 mt-5 col-md-11 mx-auto ">
+    <div class="col-md-11 m-3 ms-5  card-body">
+        <form method="post">
+            <h2 class='h2 py-3'>Odpowiedz na zgłoszenie</h2>
+            {% csrf_token %}
+            <textarea class="form-control" rows="10"  name="response"></textarea>
+            <button class="btn btn-dark mt-3" type="submit">Dodaj odpowiedź</button>
+          </form>
+          
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
