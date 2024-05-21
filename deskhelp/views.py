@@ -46,10 +46,10 @@ class TicketDetailsView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         ticket_id = self.kwargs["ticket_id"]
         ticket = Ticket.objects.get(pk=ticket_id)
-        responses = ticket.responses.all()  # Pobierz wszystkie odpowiedzi dla tego ticketa
+        responses = ticket.responses.all()  
         context["ticket"] = ticket
         context["response_form"] = TicketResponseForm()
-        context["responses"] = responses  # Przekaż odpowiedzi do kontekstu
+        context["responses"] = responses
         return context
 
     def post(self, request, *args, **kwargs):

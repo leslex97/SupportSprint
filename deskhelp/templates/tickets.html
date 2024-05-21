@@ -1,17 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content%}
-<form name='search_form' method='post' class='form-inline'>
-    {% csrf_token %}
-    {{ form }}
-    <button
-    type = 'submit'
-    class = 'btn btn-primary btn-sm'>
-    <i class='fas fa-search'></i>
-    Szukaj
-    </button>
-
-</form>
 
 <table class ='table'>
     <thead>

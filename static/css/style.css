@@ -1,3 +1,8 @@
 .ticket{
     cursor:pointer;
 }
+
+.login-card {
+    max-width: 550px;
+    margin: 200px auto; /* Zwiększono margines górny do 200px */
+}
