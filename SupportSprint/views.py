@@ -1,13 +1,11 @@
 from django.contrib.auth.views import LoginView,LogoutView
 from django.views import View
-#from models import UserProfile
 from .forms import CustomUserCreationForm
-from django.views.generic.edit import CreateView,UpdateView
+from django.views.generic.edit import CreateView
 from django.urls.base import reverse_lazy
 from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from .models import UserProfile
 from .forms import UserForm, UserProfileForm
 
 

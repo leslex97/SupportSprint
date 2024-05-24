@@ -1,14 +1,37 @@
-.ticket{
-    cursor:pointer;
+html, body {
+    height: 100%;
+    margin: 0;
 }
 
-.system-response{
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.ticket {
+    cursor: pointer;
+}
+
+.system-response {
     background-color: rgba(212, 205, 205, 0.527) !important;
-    color:rgb(0, 0, 0) !important;
+    color: rgb(0, 0, 0) !important;
     box-shadow: white !important;
 }
 
 .login-card {
     max-width: 550px;
-    margin: 200px auto; /* Zwiększono margines górny do 200px */
+    margin: 200px auto;
+}
+
+.content {
+    flex: 1;
+}
+
+.footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 1rem;
+    flex-shrink: 0;
 }
