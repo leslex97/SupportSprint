@@ -2,7 +2,18 @@
 <div class="container-fluid col-11 my-5">
   <div class="card shadow">
     <div class="card-body">
+
       <div class="row">
+        <div class="container mt-3">
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                      {{ message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              {% endfor %}
+          {% endif %}
+      </div>
         <div class="col-md-8">
           <h2 class="card-title">
             Zgłoszenie #{{ ticket.id }}: {{ ticket.title }}
@@ -11,37 +22,71 @@
             Zgłaszający: {{ ticket.reporter }}
           </h6>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <p class="card-text">
             Utworzono: <strong>{{ ticket.created_at }}</strong>
           </p>
+
           <p class="card-text">Status: <strong>{{ ticket.status }}</strong></p>
+        </div>
+        <div class='col-md-1'>
+          <div class="dropdown actions">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              Akcje
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li>
+                <form action="{% url 'accept_ticket' ticket.id %}" method="post" class="d-inline">
+                  {% csrf_token %}
+                  {% if ticket.owner == nobody or ticket.owner == user %}
+
+                  <button type="submit" class="dropdown-item">Przyjmij</button>
+                  {% else %}
+                  <button type="submit" class="dropdown-item">Przejmij</button>
+                  {% endif %}
+                </form>
+              </li>
+              <!-- Można dodać więcej elementów dropdown tutaj -->
+            </ul>
+          </div>
         </div>
       </div>
       <div class="row mt-1">
         <div class="col-md-8">
           <p class="card-text">Kolejka: <strong>{{ ticket.queue }}</strong></p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
           <p class="card-text">
-            Właściciel: <strong>{{ ticket.owner }}</strong>
+    
+            Właściciel: {% if not ticket.owner == nobody %}
+            <a href="{% url 'user_details' ticket.owner %}" class='h6'>
+              {%endif %}
+              <strong>
+                {{ ticket.owner }}
+              </a>
+            </strong>
           </p>
         </div>
+
+        <div class="col-md-10 mt-5 my-5 p-5 card shadow mx-auto">
+          <p class="card-body">{{ ticket.content }}</p>
+        </div>
+        <h2 class='h2'>Odpowiedzi:</h2>
+        {% for response in responses %}
         
-        <div class="col-md-10 mt-5 my-5 card shadow mx-auto">
-            <p class="card-body">{{ ticket.content }}</p>
+          {% if response.author.username == "System"%}
+          <div class="col-md-10 mt-5 p-3 card shadow mx-auto system-response">
+          {% else %}
+          <div class="col-md-10 mt-5 p-3 card shadow mx-auto">
+          {% endif %}
+          <div class="response">
+            <p>
+              <strong>{{ response.author.username }}</strong> - {{ response.created_at }}
+            </p>
+            <p>{{ response.body }}</p>
           </div>
-          <h2 class='h2'>Odpowiedzi:</h2>
-          {% for response in responses %}
-          <div class="col-md-10 mt-5 p-5 card shadow mx-auto">
-            <div class="response">
-              <p>
-                <strong>{{ response.author.username }}</strong> - {{ response.created_at }}
-              </p>
-              <p>{{ response.body }}</p>
-            </div>
-          </div>
-          {% endfor %}
+        </div>
+        {% endfor %}
         <p class="card-text m-5">
           Ostatnia Aktualizacja: <strong>{{ ticket.updated_at }}</strong>
         </p>
@@ -49,14 +94,12 @@
     </div>
   </div>
   <div class="card shadow p-5 mt-5 col-md-11 mx-auto ">
-    <div class="col-md-11 m-3 ms-5  card-body">
-        <form method="post">
-            <h2 class='h2 py-3'>Odpowiedz na zgłoszenie</h2>
-            {% csrf_token %}
-            <textarea class="form-control" rows="10"  name="response"></textarea>
-            <button class="btn btn-dark mt-3" type="submit">Dodaj odpowiedź</button>
-          </form>
-          
+    <div class="col-md-11 m-3 ms-5 card-body">
+      <form method="post">
+        <h2 class='h2 py-3'>Odpowiedz na zgłoszenie</h2>
+        {% csrf_token %}
+        <textarea class="form-control" rows="10" name="response"></textarea>
+        <button class="btn btn-dark mt-3" type="submit">Dodaj odpowiedź</button>
       </form>
     </div>
   </div>

@@ -21,6 +21,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'ticket-list' %}">Lista zgłoszeń</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'create_ticket' %}">Nowe zgłoszenie</a>
+                    </li>
                 </ul>
                 <form name="search_form" method="post" action="{% url 'search_tickets' %}" class="d-flex ms-auto me-3">
                     {% csrf_token %}
@@ -37,8 +40,8 @@
                             Użytkownik: {{ user.username }} 
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href='#'><i class="fas fa-user"></i> Moje konto</a></li>
-                            <li><a class="dropdown-item" href='#'><i class="fas fa-key"></i> Zmień hasło</a></li>
+                            <li><a class="dropdown-item" href="{% url 'user_details' user.username %}"><i class="fas fa-user"></i> Moje konto</a></li>
+                            <li><a class="dropdown-item" href='{% url "password_change" %}'><i class="fas fa-key"></i> Zmień hasło</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form id="logout-form" method="post" action="{% url 'logout' %}">

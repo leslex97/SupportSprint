@@ -11,8 +11,6 @@ class LoginRequiredMiddleware:
         exempt_urls = [
             reverse('login'),  
             reverse('signup'), 
-            reverse('password_change'),
-            reverse('password_change_done'),
             reverse('logout'),
 
         ]

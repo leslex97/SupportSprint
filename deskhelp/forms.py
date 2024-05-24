@@ -20,3 +20,10 @@ class TicketResponseForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+class CreateTicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['title','content', 'queue']
+        
+ 

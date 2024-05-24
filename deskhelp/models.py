@@ -19,6 +19,8 @@ class Queue(models.Model):
     def __str__(self):
         return self.name
 
+
+
 class Ticket(models.Model):
     STATUS_CHOICES = [
         ('Nowy', 'Nowy'),
@@ -35,7 +37,8 @@ class Ticket(models.Model):
                              verbose_name='Tytuł zgłoszenia'
                              ,max_length=255
                              )
-    reporter = models.EmailField(
+    reporter = models.CharField(
+                            max_length=50,
                             verbose_name='Zgłaszający'
                             )
     content = models.TextField(
@@ -43,7 +46,7 @@ class Ticket(models.Model):
                             max_length=10000
                             )
     owner = models.ForeignKey(
-                            User, 
+                            User,
                             blank=True, 
                             null=True, 
                             on_delete=models.CASCADE
@@ -51,7 +54,7 @@ class Ticket(models.Model):
     status = models.CharField(
                               max_length=20,
                               choices=STATUS_CHOICES,
-                              default='open'
+                              default='Nowy'
                               )
     queue = models.ForeignKey(Queue, on_delete=models.CASCADE, default=1)
     created_at = models.DateTimeField(
@@ -60,7 +63,10 @@ class Ticket(models.Model):
     updated_at = models.DateTimeField(
                               auto_now=True
                               )
-
+    def save(self, *args, **kwargs):
+        if not self.owner:
+            self.owner = User.objects.get(username='nobody')
+        super().save(*args, **kwargs)
     
     def owner_display(self):
         return self.owner.username if self.owner else 'nobody'
