@@ -24,6 +24,12 @@
         <div class="col-md-8">{{ profile.phone_number }}</div>
       </div>
       <div class="row mb-3">
+        <div class="col-md-4 font-weight-bold">Kolejki:</div>
+        
+        <div class="col-md-8">{% for queue in queues %}{{ queue }}, {% endfor %}</div>
+        
+      </div>
+      <div class="row mb-3">
         <div class="col-md-4 font-weight-bold">Administrator:</div>
         <div class="col-md-8">
           {% if user.is_staff %} Tak {% else %} Nie {% endif %}

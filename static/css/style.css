@@ -18,6 +18,22 @@ body {
     box-shadow: white !important;
 }
 
+.welcome-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tickets{
+    margin-top:50px;
+}
+.queues {
+    flex: 1;
+    margin-left: 20px;
+    max-width: 20rem;
+}
+
+
 .login-card {
     max-width: 550px;
     margin: 200px auto;

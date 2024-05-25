@@ -7,7 +7,7 @@ from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import UserForm, UserProfileForm
-
+from deskhelp.views import get_user_queues
 
 class MainLoginView(LoginView):
     template_name = 'login.html'
@@ -29,7 +29,9 @@ class UserDetailsView(View):
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
         profile = user.userprofile
-        return render(request, self.template_name, {'user': user, 
+        
+        return render(request, self.template_name, {'user': user,
+                                                    'queues': get_user_queues(request.user), 
                                                     'profile': profile})
 class EditUserInfoView(View):
     def get(self, request, *args, **kwargs):
@@ -57,5 +59,3 @@ class EditUserInfoView(View):
             'profile_form': profile_form
         })
     
-def main(request):
-    return render(request, 'base.html')

@@ -15,11 +15,10 @@ class Queue(models.Model):
     department = models.ForeignKey(
                                     Department,
                                     on_delete=models.CASCADE)
+    users = models.ManyToManyField(User, related_name='queues') 
     
     def __str__(self):
-        return self.name
-
-
+        return f"{self.name} - {self.department.name}"
 
 class Ticket(models.Model):
     STATUS_CHOICES = [
@@ -56,13 +55,15 @@ class Ticket(models.Model):
                               choices=STATUS_CHOICES,
                               default='Nowy'
                               )
-    queue = models.ForeignKey(Queue, on_delete=models.CASCADE, default=1)
+    queue = models.ForeignKey(Queue, on_delete=models.CASCADE,
+                              default=1)
     created_at = models.DateTimeField(
                               auto_now_add=True
                               )
     updated_at = models.DateTimeField(
                               auto_now=True
                               )
+    
     def save(self, *args, **kwargs):
         if not self.owner:
             self.owner = User.objects.get(username='nobody')
@@ -70,7 +71,6 @@ class Ticket(models.Model):
     
     def owner_display(self):
         return self.owner.username if self.owner else 'nobody'
-    
     
     def __str__(self):
         return self.title
@@ -91,7 +91,8 @@ class TicketResponse(models.Model):
     def __str__(self):
         return f"Response to Ticket #{self.ticket.id} by {self.author.username}"
 
-   
+
+@receiver(post_save, sender=TicketResponse)
 def update_ticket_updated_at(sender, instance, created, **kwargs):
     if created:
         instance.ticket.updated_at = timezone.now()

@@ -17,7 +17,7 @@ class CustomUserCreationForm(UserCreationForm):
         self.fields['password1'].help_text = None
         
         self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Potwierdzenie hasła'})
-        self.fields['password1'].label = "Powtórz Hasło"
+        self.fields['password2'].label = "Powtórz Hasło"
         self.fields['password2'].help_text = None
         
 class UserForm(forms.ModelForm):

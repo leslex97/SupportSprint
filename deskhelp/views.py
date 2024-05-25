@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic.edit import FormView, CreateView
-from deskhelp.models import Ticket
+from django.views.generic.base import View
+from deskhelp.models import Ticket, Queue
 from deskhelp.forms import SearchForm
 from django.db.models import Q
 from django.contrib import messages
@@ -16,6 +17,11 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.models import User
 
 # Create your views here.
+def get_user_queues(user):
+    if user.is_authenticated:
+        return Queue.objects.filter(users=user)
+    return []
+
 
 class ListTickets(
     FormView
@@ -83,6 +89,19 @@ class CreateTicketView(CreateView):
     def form_valid(self, form):
         form.instance.reporter = self.request.user.username
         return super().form_valid(form)
+
+class UserTicketsView(View):
+    template_name = 'base.html'
+    def get(self, request, *args, **kwargs):
+        tickets = Ticket.objects.filter(owner=request.user)
+        queues = get_user_queues(request.user)
+        queues_tickets = {}
+        for queue in queues:
+            queues_tickets[queue]=(Ticket.objects.filter(queue=queue))
+        return render(request, self.template_name, {'tickets': tickets,
+                                                    'queues': queues,
+                                                    'queues_tickets':queues_tickets})
+
 
 def update_ticket(ticket_id, action, status):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
