@@ -9,14 +9,33 @@ from django.db.models import Q
 from django.contrib import messages
 from django.views.generic.base import TemplateView
 from deskhelp.forms import TicketResponseForm, CreateTicketForm
-from .models import TicketResponse
+from .models import TicketResponse,Department,Queue
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.models import User
+from rest_framework import viewsets
+from .serializer import TicketSerializer,TicketResponseSerializer,DepartmentSerializer,QueueSerializer
 
-# Create your views here.
+############################# TEST API ###############################
+class TicketViewSet(viewsets.ModelViewSet):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketSerializer
+
+class TicketResponseViewSet(viewsets.ModelViewSet):
+    queryset = TicketResponse.objects.all()
+    serializer_class = TicketResponseSerializer
+
+class DepartmentViewSet(viewsets.ModelViewSet):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+        
+class QueueViewSet(viewsets.ModelViewSet):
+    queryset = Queue.objects.all()
+    serializer_class = QueueSerializer
+########################################################
+
 def get_user_queues(user):
     if user.is_authenticated:
         return Queue.objects.filter(users=user)
@@ -91,7 +110,7 @@ class CreateTicketView(CreateView):
         return super().form_valid(form)
 
 class UserTicketsView(View):
-    template_name = 'base.html'
+    template_name = 'desk_main.html'
     def get(self, request, *args, **kwargs):
         tickets = Ticket.objects.filter(owner=request.user)
         queues = get_user_queues(request.user)

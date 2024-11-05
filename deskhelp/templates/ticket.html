@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'desk_main.html' %} {% block content %}
 <div class="container-fluid col-11 my-5">
   <div class="card shadow">
     <div class="card-body">
@@ -74,9 +74,9 @@
         {% for response in responses %}
         
           {% if response.author.username == "System"%}
-          <div class="col-md-10 mt-5 p-3 card shadow mx-auto system-response">
+          <div class="col-md-10 mt-3 p-2 card shadow mx-auto system-response">
           {% else %}
-          <div class="col-md-10 mt-5 p-3 card shadow mx-auto">
+          <div class="col-md-10 mt-3 p-2 card shadow mx-auto">
           {% endif %}
           <div class="response">
             <p>
