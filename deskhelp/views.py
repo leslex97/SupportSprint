@@ -18,23 +18,7 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets
 from .serializer import TicketSerializer,TicketResponseSerializer,DepartmentSerializer,QueueSerializer
 
-############################# TEST API ###############################
-class TicketViewSet(viewsets.ModelViewSet):
-    queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
 
-class TicketResponseViewSet(viewsets.ModelViewSet):
-    queryset = TicketResponse.objects.all()
-    serializer_class = TicketResponseSerializer
-
-class DepartmentViewSet(viewsets.ModelViewSet):
-    queryset = Department.objects.all()
-    serializer_class = DepartmentSerializer
-        
-class QueueViewSet(viewsets.ModelViewSet):
-    queryset = Queue.objects.all()
-    serializer_class = QueueSerializer
-########################################################
 
 def get_user_queues(user):
     if user.is_authenticated:

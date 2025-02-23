@@ -30,5 +30,6 @@ urlpatterns = [
     path('password_change/done/', PasswordChangeView.as_view(template_name='password_change_done.html')),
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('user_details/<str:username>/', views.UserDetailsView.as_view(), name='user_details'),
-    path('edit_user_details/<str:username>/', views.EditUserInfoView.as_view(), name='edit_user')
+    path('edit_user_details/<str:username>/', views.EditUserInfoView.as_view(), name='edit_user'),
+    path('api/', include('api.urls'))
 ]

@@ -1,14 +1,7 @@
 from django.urls import path, include
-from .views import ListTickets,UserTicketsView,SearchTicketsView,CreateGuestTicketView, TicketDetailsView, accept_ticket, CreateTicketView,TicketViewSet,TicketResponseViewSet, QueueViewSet, DepartmentViewSet,MainDeskView
-from rest_framework import routers
-from SupportSprint.views import UserViewSet
+from .views import ListTickets,UserTicketsView,SearchTicketsView,CreateGuestTicketView, TicketDetailsView, accept_ticket, CreateTicketView,MainDeskView
 
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)  
-router.register(r'tickets', TicketViewSet)
-router.register(r'tickets-responses', TicketResponseViewSet)
-router.register(r'queues', QueueViewSet)
-router.register(r'departments', DepartmentViewSet)
+
 
 
 urlpatterns = [
@@ -20,7 +13,4 @@ urlpatterns = [
     path('search/', SearchTicketsView.as_view(), name='search_tickets'),
     path('create/', CreateTicketView.as_view(), name='create_ticket'),
     path('create_guest/', CreateGuestTicketView.as_view(), name='guest_ticket'),
-    
-    path('api/', include(router.urls)),
-    path('api-auth', include('rest_framework.urls', namespace='rest_framefork')),
-]
+    ]

@@ -16,6 +16,11 @@ class LoginRequiredMiddleware:
 
         ]
 
+        # Dopuszczenie wszystkich ścieżek API do wyjątków
+        if request.path.startswith('/api/'):
+            return self.get_response(request)
+
+        # Sprawdzanie, czy użytkownik jest uwierzytelniony
         if not request.user.is_authenticated and request.path not in exempt_urls:
             return redirect(settings.LOGIN_URL)
 
