@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'desk_main.html' %}
 {% load crispy_forms_tags %}
 
 {% block title %}Dodaj zgłoszenie{% endblock %}
@@ -8,7 +8,7 @@
     <div class="card shadow p-2 col-md-11 mx-auto custom-card-height">
         <div class="col-md-11 m-2 ms-5 card-body">
             <h2 class='h2 py-3'>Dodaj zgłoszenie</h2>
-            <form action="{% block url %}{% endblock %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'create_ticket' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="form-group">

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-1">
+    <div class="card shadow p-2 col-md-11 mx-auto custom-card-height">
+        <div class="col-md-11 m-2 ms-5 card-body">
+            <h2 class='h2 py-3'>Dodaj zgłoszenie</h2>
+            <p class="text-muted">Proszę wypełnić poniższe pola, aby zgłosić problem lub pytanie.</p>
+
+            <form action="{% url 'guest_ticket' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Pole tytułu -->
+                <div class="form-group mb-5">
+                    {{ form.title|as_crispy_field }}
+                    <small class="form-text text-muted">
+                        Proszę w skrócie opisać problem
+                    </small>
+                </div>
+
+                <!-- Pole treści -->
+                <div class="form-group mt-3 mb-5">
+                    {{ form.content|as_crispy_field }}
+                    <small class="form-text text-muted">
+                        Proszę dokładnie opisać problem. Maksymalnie 10 000 znaków.
+                    </small>
+                </div>
+
+                <!-- Pole wyboru kolejki -->
+                <div class="form-group mt-3 mb-5">
+                    {{ form.queue|as_crispy_field }}
+                    <small class="form-text text-muted">
+                        Wybierz kolejkę, do której ma trafić zgłoszenie.
+                    </small>
+                </div>
+                <div class="form-group mt-3 mb-5">
+                    {{ form.reporter|as_crispy_field }}
+                    <small class="form-text text-muted">
+                        Podaj swój adres email.
+                    </small>
+                </div>
+
+                <!-- Przyciski -->
+                <div class="d-flex justify-content-center mt-4">
+                    <button class="btn btn-lg btn-outline-secondary custom-btn-width" type="submit">Wyślij zgłoszenie</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if request.GET.success %}
+<script>
+
+    alert("Zgłoszenie zostało wysłane poprawnie!");
+        window.location.href = "{% url 'login' %}";
+</script>
+{% endif %}
+{% endblock %}

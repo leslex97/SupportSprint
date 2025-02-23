@@ -8,14 +8,24 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import UserForm, UserProfileForm
 from deskhelp.views import get_user_queues
+from rest_framework import viewsets
+from .serializer import UserSerializer
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    
 class MainLoginView(LoginView):
     template_name = 'login.html'
 
  
 class MainLogoutView(LogoutView):
     template_name = 'logout.html'
-    
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm

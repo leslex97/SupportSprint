@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'desk_main.html' %} {% block content %}
 <div class="container-fluid col-11 my-5">
   <div class="card shadow">
     <div class="card-body">
@@ -34,19 +34,35 @@
             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
               Akcje
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li>
-                <form action="{% url 'accept_ticket' ticket.id %}" method="post" class="d-inline">
-                  {% csrf_token %}
-                  {% if ticket.owner == nobody or ticket.owner == user %}
 
-                  <button type="submit" class="dropdown-item">Przyjmij</button>
-                  {% else %}
-                  <button type="submit" class="dropdown-item">Przejmij</button>
-                  {% endif %}
-                </form>
-              </li>
-            </ul>
+<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% if ticket.status == ticket.Status.NOWY and request.user != ticket.owner or ticket.status == ticket.Status.ODRZUCONY %}
+        <!-- Opcja "Przyjmij" (dostępna tylko dla osób, które nie są właścicielami) -->
+        <li>
+            <form action="{% url 'accept_ticket' ticket.id ticket.Status.W_TRAKCIE %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item">Przyjmij</button>
+            </form>
+        </li>
+    {% else %}
+        <!-- Opcje dla innych statusów, dostępne tylko dla właścicieli -->
+        {% for status, label in ticket.Status.choices %}
+            {% if status != ticket.Status.NOWY %}  <!-- Wyklucz "Nowy" -->
+                <li>
+                    <form action="{% url 'accept_ticket' ticket.id status %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button 
+                            type="submit" 
+                            class="dropdown-item" 
+                            {% if request.user != ticket.owner %}disabled{% endif %}> <!-- Blokada dla nie-właścicieli -->
+                            {{ label }}
+                        </button>
+                    </form>
+                </li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</ul>
           </div>
         </div>
       </div>
@@ -74,9 +90,9 @@
         {% for response in responses %}
         
           {% if response.author.username == "System"%}
-          <div class="col-md-10 mt-5 p-3 card shadow mx-auto system-response">
+          <div class="col-md-10 mt-3 p-2 card shadow mx-auto system-response">
           {% else %}
-          <div class="col-md-10 mt-5 p-3 card shadow mx-auto">
+          <div class="col-md-10 mt-3 p-2 card shadow mx-auto">
           {% endif %}
           <div class="response">
             <p>

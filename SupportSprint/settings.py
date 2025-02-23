@@ -25,13 +25,14 @@ SECRET_KEY = "django-insecure-d^6%(lj8d86ve0-chxg85h5n*hj3i%o#sfeml8*shthwiah#2(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 default_app_config = 'SupportSprint.apps.SupportSprintConfig'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'SupportSprint',
     'crispy_forms',
     'crispy_bootstrap5',
+
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -83,9 +85,13 @@ WSGI_APPLICATION = "SupportSprint.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'supportsprint',
+        'USER': 'supportsprint',
+        'PASSWORD': 'raspberry1',
+        'HOST': 'localhost',
+        'PORT': '3306',  
     }
 }
 
@@ -136,3 +142,10 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
+
+REST_FRAMEWORK = {
+'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.renderers.BrowsableAPIRenderer',  <- removing this
+    ]
+}

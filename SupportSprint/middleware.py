@@ -12,6 +12,7 @@ class LoginRequiredMiddleware:
             reverse('login'),  
             reverse('signup'), 
             reverse('logout'),
+            reverse('guest_ticket')
 
         ]
 
