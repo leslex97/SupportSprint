@@ -1,0 +1,59 @@
+# ------------------------
+# Python / Django
+# ------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.mo
+*.db
+*.coverage
+*.egg-info/
+.eggs/
+
+# ------------------------
+# Django specific
+# ------------------------
+*.env
+.env.*
+local_settings.py
+db.sqlite3
+media/
+staticfiles/
+
+# ------------------------
+# Virtual environments
+# ------------------------
+venv/
+ENV/
+env/
+.venv/
+
+# ------------------------
+# IDEs & Editors
+# ------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ------------------------
+# Docker
+# ------------------------
+*.pid
+docker-compose.override.yml
+
+# ------------------------
+# OS-specific
+# ------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------
+# Others
+# ------------------------
+__snapshots__/
