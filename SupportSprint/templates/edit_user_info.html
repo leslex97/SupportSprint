@@ -1,0 +1,50 @@
+{% extends "desk_main.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container col-lg-8 my-5">
+  <div class="card">
+    <div class="card-header text-center">
+      <h2 class="h2">Edytuj informacje: {{ user.username }}</h2>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="row mb-3">
+          <div class="col-md-4 font-weight-bold">Nazwa użytkownika:</div>
+          <div class="col-md-8">
+            {{ user.username}}
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 font-weight-bold">Adres Email:</div>
+          <div class="col-md-8">
+            {{ user_form.email }}
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 font-weight-bold">Imię:</div>
+          <div class="col-md-8">
+            {{ user_form.first_name}}
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 font-weight-bold">Nazwisko:</div>
+          <div class="col-md-8">
+            {{ user_form.last_name}}
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 font-weight-bold">Telefon:</div>
+          <div class="col-md-8">
+            {{ profile_form.phone_number}}
+          </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-4 ">
+          <button class="btn btn-dark btn-lg mx-3 col-5" type="submit">Zapisz zmiany</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

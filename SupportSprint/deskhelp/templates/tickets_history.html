@@ -1,0 +1,35 @@
+{% extends 'desk_main.html' %}
+
+{% block content %}
+{% block headeer %}
+<h2 class='h2  pb-5 mb-5'>Historia zgłoszeń {{ user.username }} </h2>
+{% endblock %}
+
+
+<div class='  m-2'>
+    <div class="container-fluid">
+<div class="row fw-bold border-bottom pb-2 mb-3">
+    <div class="col-md-1">Numer</div>
+    <div class="col-md-3">Tytuł</div>
+    <div class="col-md-2">Zgłaszający</div>
+    <div class="col-md-1">Właściciel</div>
+    <div class="col-md-2">Kolejka</div>
+    <div class="col-md-1">Status</div>
+    <div class="col-md-2">Kiedy wpłynęło</div>
+</div>
+        {% for ticket in tickets %}
+        <div class='ticket border rounded mb-2 m-2 p-2' onclick="window.location.href='{% url 'ticket_details' ticket.id %}'">
+            <div class="row">
+                <div class="col-md-1">#{{ ticket.id }}</div>
+                <div class="col-md-3">{{ ticket.truncated_title }}</div>
+                <div class="col-md-2">{{ ticket.reporter }}</div>
+                <div class="col-md-1">{{ ticket.owner }}</div>
+                <div class="col-md-2">{{ ticket.queue }}</div>
+                <div class="col-md-1">{{ ticket.status }}</div>
+                <div class="col-md-2">{{ ticket.created_at }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

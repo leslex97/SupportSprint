@@ -1,0 +1,122 @@
+{% extends 'desk_main.html' %} {% block content %}
+<div class="container-fluid col-11 my-5">
+  <div class="card shadow">
+    <div class="card-body">
+
+      <div class="row">
+        <div class="container mt-3">
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                      {{ message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              {% endfor %}
+          {% endif %}
+      </div>
+        <div class="col-md-8">
+          <h2 class="card-title">
+            Zgłoszenie #{{ ticket.id }}: {{ ticket.title }}
+          </h2>
+          <h6 class="card-subtitle mb-2 text-muted">
+            Zgłaszający: {{ ticket.reporter }}
+          </h6>
+        </div>
+        <div class="col-md-3">
+          <p class="card-text">
+            Utworzono: <strong>{{ ticket.created_at }}</strong>
+          </p>
+
+          <p class="card-text">Status: <strong>{{ ticket.status }}</strong></p>
+        </div>
+        <div class='col-md-1'>
+          <div class="dropdown actions">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              Akcje
+            </button>
+
+<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% if ticket.status == ticket.Status.NOWY and request.user != ticket.owner or ticket.status == ticket.Status.ODRZUCONY %}
+        <!-- Opcja "Przyjmij" (dostępna tylko dla osób, które nie są właścicielami) -->
+        <li>
+            <form action="{% url 'accept_ticket' ticket.id ticket.Status.W_TRAKCIE %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item">Przyjmij</button>
+            </form>
+        </li>
+    {% else %}
+        <!-- Opcje dla innych statusów, dostępne tylko dla właścicieli -->
+        {% for status, label in ticket.Status.choices %}
+            {% if status != ticket.Status.NOWY %}  <!-- Wyklucz "Nowy" -->
+                <li>
+                    <form action="{% url 'accept_ticket' ticket.id status %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button 
+                            type="submit" 
+                            class="dropdown-item" 
+                            {% if request.user != ticket.owner %}disabled{% endif %}> <!-- Blokada dla nie-właścicieli -->
+                            {{ label }}
+                        </button>
+                    </form>
+                </li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</ul>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-md-8">
+          <p class="card-text">Kolejka: <strong>{{ ticket.queue }}</strong></p>
+        </div>
+        <div class="col-md-2">
+          <p class="card-text">
+    
+            Właściciel: {% if not ticket.owner == nobody %}
+            <a href="{% url 'user_details' ticket.owner %}" class='h6'>
+              {%endif %}
+              <strong>
+                {{ ticket.owner }}
+              </a>
+            </strong>
+          </p>
+        </div>
+
+        <div class="col-md-10 mt-5 my-5 p-5 card shadow mx-auto">
+          <p class="card-body">{{ ticket.content }}</p>
+        </div>
+        <h2 class='h2'>Odpowiedzi:</h2>
+        {% for response in responses %}
+        
+          {% if response.author.username == "System"%}
+          <div class="col-md-10 mt-3 p-2 card shadow mx-auto system-response">
+          {% else %}
+          <div class="col-md-10 mt-3 p-2 card shadow mx-auto">
+          {% endif %}
+          <div class="response">
+            <p>
+              <strong>{{ response.author.username }}</strong> - {{ response.created_at }}
+            </p>
+            <p>{{ response.body }}</p>
+          </div>
+        </div>
+        {% endfor %}
+        <p class="card-text m-5">
+          Ostatnia Aktualizacja: <strong>{{ ticket.updated_at }}</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="card shadow p-5 mt-5 col-md-11 mx-auto ">
+    <div class="col-md-11 m-3 ms-5 card-body">
+      <form method="post">
+        <h2 class='h2 py-3'>Odpowiedz na zgłoszenie</h2>
+        {% csrf_token %}
+        <textarea class="form-control" rows="10" name="response"></textarea>
+        <button class="btn btn-dark mt-3" type="submit">Dodaj odpowiedź</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

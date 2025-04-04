@@ -1,0 +1,114 @@
+{% extends 'base.html'%}
+
+
+{% block search_form%}
+<form
+name="search_form"
+method="post"
+action="{% url 'search_tickets' %}"
+class="d-flex ms-auto me-3"
+>
+{% csrf_token %}
+<div class="input-group">
+  <input
+    class="form-control"
+    type="text"
+    name="fraze"
+    placeholder="Wyszukaj zgłoszenie"
+    aria-label="Search"
+  />
+  <button class="btn btn-outline-success" type="submit">
+    <i class="fas fa-search"></i>
+  </button>
+</div>
+</form>
+{% endblock %}
+{% block content %}
+<div class="welcome-header">
+  <h2 class="h1">Witaj {{ user.username }}</h2>
+  <div class="queues card shadow col-3">
+    <div class="card-body">
+      <h4 class="card-title">Twoje kolejki</h4>
+      {% if queues %}
+      <ul class="list-group">
+        {% for queue in queues %}
+        <li class="list-group-item">{{ queue }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>Nie masz żadnych przypisanych kolejek.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div class="card shadow mt-3 mb-5">
+  <div class="card-body">
+    <div class="col-md-12">
+      <h2 class="card-title">Twoje zgłoszenia</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Numer</th>
+            <th scope="col">Tytuł</th>
+            <th scope="col">Zgłaszający</th>
+            <th scope="col">Właściciel</th>
+            <th scope="col">Status</th>
+            <th scope="col">Kiedy wpłynęło</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ticket in tickets %}
+          <tr
+            class="ticket"
+            onclick="window.location.href='{% url 'ticket_details' ticket.id %}'"
+          >
+            <th scope="row">#{{ ticket.id }}</th>
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.reporter }}</td>
+            <td>{{ ticket.owner }}</td>
+            <td>{{ ticket.status }}</td>
+            <td>{{ ticket.created_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<h2 class="h1 mb-5">Zgłoszenia z twoich kolejek</h2>
+{% for queue,tickets in queues_tickets.items %}
+<div class="card shadow mt-3 mb-5 tickets">
+  <div class="card-body">
+    <div class="col-md-12">
+      <h2 class="mb-4">Kolejka: {{queue}}</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Numer</th>
+            <th scope="col">Tytuł</th>
+            <th scope="col">Zgłaszający</th>
+            <th scope="col">Właściciel</th>
+            <th scope="col">Status</th>
+            <th scope="col">Kiedy wpłynęło</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ticket in tickets %}
+          <tr
+            class="ticket"
+            onclick="window.location.href='{% url 'ticket_details' ticket.id %}'"
+          >
+            <th scope="row">#{{ ticket.id }}</th>
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.reporter }}</td>
+            <td>{{ ticket.owner }}</td>
+            <td>{{ ticket.status }}</td>
+            <td>{{ ticket.created_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endfor %} {% endblock %}

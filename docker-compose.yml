@@ -1,0 +1,44 @@
+ 
+services:
+
+  web:
+    build:
+      context: ./SupportSprint/
+    command: gunicorn --workers=3 --threads=2 --timeout=120 --bind 0.0.0.0:8000 SupportSprint.wsgi:application
+    # command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./SupportSprint/:/usr/src/app
+      - static_files:/usr/src/app/staticfiles
+    ports:
+      - 8000:8000
+
+
+    network_mode: "host"
+    restart: always
+
+  nginx:
+    build:
+      context: ./nginx/
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - static_files:/home/app/staticfiles
+    restart: always
+ 
+  dns:
+    build:
+      context: ./dns/
+    restart: always
+    ports:
+      - 53:53
+      - 53:53/udp
+    volumes:
+      - ./dns/named.conf:/etc/bind/named.conf
+      - ./dns/zone/:/etc/bind/zone/
+    command: named -c /etc/bind/named.conf -g -u named
+
+
+volumes:
+   static_files: {}
+   mariadb_data:

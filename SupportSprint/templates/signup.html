@@ -1,0 +1,20 @@
+{% extends 'login.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block form_content %}
+<h2 class="card-title text-center">SupportSprint</h2>
+<h4 class="text-center py-3">Rejestracja</h4>
+<form action="{% block url %}{% endblock %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy}}
+    <div class='text-center m-3'>
+    <span>Masz już konto?
+        <a href="{% url 'login'%}">Zaloguj się</a>
+    
+</span>
+</div>
+    <button type="submit" class=" btn btn-dark w-100">Wyślij</button>
+</form>
+{% endblock %}

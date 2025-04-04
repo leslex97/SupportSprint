@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container col-lg-8 my-5">
+  <div class="card">
+    <div class="card-header text-center">
+      <h2 class="h2">Szczegóły Konta: {{ user.username }}</h2>
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-4 font-weight-bold">Imię:</div>
+        <div class="col-md-8">{{ user.first_name }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 font-weight-bold">Nazwisko:</div>
+        <div class="col-md-8">{{ user.last_name }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 font-weight-bold">Adres Email:</div>
+        <div class="col-md-8">{{ user.email }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 font-weight-bold">Telefon:</div>
+        <div class="col-md-8">{{ profile.phone_number }}</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 font-weight-bold">Kolejki:</div>
+        
+        <div class="col-md-8">{% for queue in queues %}{{ queue }}, {% endfor %}</div>
+        
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 font-weight-bold">Administrator:</div>
+        <div class="col-md-8">
+          {% if user.is_staff %} Tak {% else %} Nie {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if request.user == user %}
+  <div class="d-flex justify-content-center align-items-center mt-4 ">
+    <a class="btn btn-dark btn-lg mx-3 col-5" href = '{% url "password_change" %}'>Zmień hasło</a>
+    <a class="btn btn-dark btn-lg mx-3 col-5" href = '{% url "edit_user" user.username %}'>Edytuj informacje</a>
+  </div>
+  {% endif%}
+</div>
+{% endblock %}
